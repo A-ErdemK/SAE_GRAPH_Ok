@@ -24,9 +24,30 @@ public class Executable {
         Graph<String, DefaultEdge> graphe = Echauffement.convertir("datatest.txt");
 
         DOTExporter<String, DefaultEdge> exporter = new DOTExporter<>();
-        exporter.setVertexAttributeProvider((nom) -> Map.of("label", new DefaultAttribute<>(nom, AttributeType.STRING)));
+        exporter.setVertexAttributeProvider(nom -> Map.of("label", DefaultAttribute.createAttribute(nom)));
         exporter.exportGraph(graphe, new FileWriter("graphe_collaborations.dot"));
 
         System.out.println("Graphe exporté dans graphe_collaborations.dot");
     }
+
+    public static Graph<String, DefaultEdge> graphTestBuilder() {
+        Graph<String, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
+
+        List<String> noms = Arrays.asList("Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace");
+        noms.forEach(graph::addVertex);
+
+        graph.addEdge("Alice", "Bob");
+        graph.addEdge("Alice", "Charlie");
+        graph.addEdge("Bob", "Charlie");
+        graph.addEdge("Charlie", "David");
+        graph.addEdge("David", "Eve");
+        graph.addEdge("Eve", "Frank");
+        graph.addEdge("Frank", "Grace");
+        graph.addEdge("Bob", "Eve");
+        graph.addEdge("Charlie", "Frank");
+        graph.addEdge("Alice", "Grace");
+        return graph;
+    }
+
+    
 }
