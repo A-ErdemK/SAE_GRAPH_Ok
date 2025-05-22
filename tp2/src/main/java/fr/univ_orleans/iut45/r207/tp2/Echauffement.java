@@ -67,26 +67,26 @@ public class Echauffement{
     }
 
     public static Set<String> collaboProche(Graph<String, DefaultEdge> g, String u, int k){
-        if (!g.containsVertex(u)) {
-            System.out.println(u + " est un illustre inconnu");
+        if (!g.containsVertex(u)) { // si le sommet u n'est pas présent dans le graphe 
+            System.out.println(u + " est un illustre inconnu"); // indique que le sommet est inexistant 
             return null;
         }
-        Set<String> collaborateurs = new HashSet<>();
-        collaborateurs.add(u);
+        Set<String> collaborateurs = new HashSet<>(); // creation d'un ensemble vide pour les collaborateurs
+        collaborateurs.add(u); // on ajoute le sommet u dans l'ensemble des collaborateurs 
 
-        for (int i = 1; i <= k; i++) {
-            Set<String> collaborateursDirects = new HashSet<>();
-            for (String c : collaborateurs) {
-                for (String voisin : Graphs.neighborListOf(g, c)) {
-                    if (!collaborateurs.contains(voisin)) {
-                        collaborateursDirects.add(voisin);
+        for (int i = 1; i <= k; i++) { // boucle de profondeur k 
+            Set<String> collaborateursDirects = new HashSet<>(); // creation d'un ensemble vide pour les collaborateurs directs 
+            for (String c : collaborateurs) { // parcour pour chaque sommets contenu dans les collaborateurs 
+                for (String voisin : Graphs.neighborListOf(g, c)) { //  pour chaque sommet de c , on regarde tous ses voisins 
+                    if (!collaborateurs.contains(voisin)) { // si un voisin n'est pas dans l'ensemble collaborateur
+                        collaborateursDirects.add(voisin); // on l'ajoute dans l'ensemble des collaborateur direct 
                     }
                 }
             }    
-            collaborateurs.addAll(collaborateursDirects);
+            collaborateurs.addAll(collaborateursDirects); // On ajoute tous les nouveaux collaborateurs du niveau actuel à l’ensemble principal `collaborateurs
         }
     
-        return collaborateurs;
+        return collaborateurs; // on retourne tous les collaborateurs
     }
 
 
