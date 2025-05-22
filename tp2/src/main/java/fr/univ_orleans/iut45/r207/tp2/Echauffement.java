@@ -26,30 +26,30 @@ import org.jgrapht.nio.csv.CSVImporter;
 
 public class Echauffement{
     public static Graph<String, DefaultEdge> convertir(String chemin) throws IOException {
-        Graph<String, DefaultEdge> graphe = new SimpleGraph<>(DefaultEdge.class);
+        Graph<String, DefaultEdge> graphe = new SimpleGraph<>(DefaultEdge.class); // creation d'un graphe simple avec des aretes Default Edge
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(chemin))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(chemin))) { // lecture de toutes les lignes du fichiers 
             String ligne;
-            while ((ligne = reader.readLine()) != null) {
-                if (ligne.isBlank()) continue; 
-                JsonObject film = JsonParser.parseString(ligne).getAsJsonObject();                                  
-                if (film.has("cast")) {
-                    JsonArray acteurs = film.getAsJsonArray("cast");
+            while ((ligne = reader.readLine()) != null) { // boucle While : tant que la lecture n'est pas finie 
+                if (ligne.isBlank()) continue;  // la lecture ne prend pas en compte les lignes vides 
+                JsonObject film = JsonParser.parseString(ligne).getAsJsonObject();  // sinon on converti la ligne en un objet JSON                                 
+                if (film.has("cast")) { // Si un film contient une liste d'acteur 
+                    JsonArray acteurs = film.getAsJsonArray("cast"); // on recupere l'ensemble des acteurs sous la forme d'un tableau JsonArray
 
-                    for (int i = 0; i < acteurs.size(); i++) {
-                        String acteur1 = acteurs.get(i).getAsString().replaceAll("\\[\\[|\\]\\]", "");
-                        graphe.addVertex(acteur1);
+                    for (int i = 0; i < acteurs.size(); i++) { // parcour de l'ensemble des acteurs par indice 
+                        String acteur1 = acteurs.get(i).getAsString().replaceAll("\\[\\[|\\]\\]", "");  // on recupere le nom de chaque acteur en enlevant les crochets 
+                        graphe.addVertex(acteur1); // on ajoute tous les acteurs en tant que sommets du graphe 
 
-                        for (int j = i + 1; j < acteurs.size(); j++) {
-                            String acteur2 = acteurs.get(j).getAsString().replaceAll("\\[\\[|\\]\\]", "");
-                            graphe.addVertex(acteur2);
-                            graphe.addEdge(acteur1, acteur2);
+                        for (int j = i + 1; j < acteurs.size(); j++) { // 2eme parcours des acteurs par indice 
+                            String acteur2 = acteurs.get(j).getAsString().replaceAll("\\[\\[|\\]\\]", ""); // meme traitement que pour le premier parcour 
+                            graphe.addVertex(acteur2); // ajout des second acteurs sur le graphe 
+                            graphe.addEdge(acteur1, acteur2); // creation d'arete entre les acteurs 
                         }
                     }
                 }
             }
         }
-        return graphe;
+        return graphe; // on retourne le graphe 
 }
 
     public static Set<String> getCollaborateursCommuns(Graph<String, DefaultEdge> g, String u, String v) {
