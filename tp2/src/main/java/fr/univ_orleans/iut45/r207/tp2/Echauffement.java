@@ -93,34 +93,34 @@ public class Echauffement{
     
 
     public static int distanceEntreActeurs(Graph<String, DefaultEdge> g, String u, String v) {
-    if (!g.containsVertex(u) || !g.containsVertex(v)) {
-        System.out.println("Un des sommets est inconnu");
+    if (!g.containsVertex(u) || !g.containsVertex(v)) { // si le sommet u ou v n'existe pas dans le graphe 
+        System.out.println("Un des sommets est inconnu"); // on indique qu'il n'existe pas 
         return -1;
     }
-    Set<String> visites = new HashSet<>();
-    visites.add(u); 
-    List<String> courant = new ArrayList<>();
-    courant.add(u);
-    int distance = 0;
+    Set<String> visites = new HashSet<>(); // creation d'un ensemble vide pour les sommets deja visités 
+    visites.add(u);  // on y ajoute le sommet u 
+    List<String> courant = new ArrayList<>(); // creation d'un ensemble vide pour les sommets du niveau courant 
+    courant.add(u); // on y ajoute le sommet u 
+    int distance = 0; // creation d'une variable distance initialisé à 0
 
-    while (!courant.isEmpty()) {
-        List<String> prochain = new ArrayList<>();
+    while (!courant.isEmpty()) { // tant que  l'ensemble des sommets courants n'est pas vide
+        List<String> prochain = new ArrayList<>(); // creation d'une liste pour les prochains sommets 
 
-        for (String sommet : courant) {
-            if (sommet.equals(v)) {
-                return distance;
+        for (String sommet : courant) { // pour chaque sommets de l'ensemble des sommets courants 
+            if (sommet.equals(v)) { // si un des sommet est le sommet v 
+                return distance; // on retourne la distance 
             }
-            for (String voisin : Graphs.neighborListOf(g, sommet)) {
-                if (!visites.contains(voisin)) {
-                    visites.add(voisin);
-                    prochain.add(voisin);
+            for (String voisin : Graphs.neighborListOf(g, sommet)) { // pour chaque voisin du sommet actuel 
+                if (!visites.contains(voisin)) { // si un voisin n'a pas été visitée 
+                    visites.add(voisin); // on l'ajoute dans l'ensemble des sommets visitée
+                    prochain.add(voisin); // on l'ajoute au prochain niveau 
                 }
             }
         }
         courant = prochain; 
-        distance++; 
+        distance++;  // on incremente la distance 
     }
-    return -1;
+    return -1; // si on sort de la boucle sans jamais avoir trouvé 'v' , ca veut dire qu'il n'existe aucun chemin entre u et v  
     }
 }
 
