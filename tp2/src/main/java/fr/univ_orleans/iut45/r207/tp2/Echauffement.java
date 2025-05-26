@@ -136,6 +136,34 @@ public class Echauffement{
 
     }
 
+    public static double distanceMoyenne(Graph<String , DefaultEdge>  g,String s){
+        if(!g.containsVertex(s)){ // verifie si le sommet est bien dans le graphe 
+            System.out.println(s + "n'apparait pas dans le graphe");
+        }
+
+        Double sommeDistance = 0; // somme des distances 
+        int nbrDistances = 0; // nbr des distances calculées 
+
+        for (String sommet : g.vertexSet()) { // Parcours de tous les sommets du graphe 
+            if (!sommet.equals(s)){
+                int distance = distanceEntreActeurs(g, s, sommet);
+                if (distance != -1 ) {
+                    sommdeDistance += distance;
+                    nbrDistances ++;
+                }
+            }
+
+        }
+
+        return (nbrDistances > 0) ? (sommeDistance / nbrDistances) : 0;
+    }
+
+
+
+
+
+
+
 
 
 
