@@ -122,6 +122,26 @@ public class Echauffement{
     }
     return -1; // si on sort de la boucle sans jamais avoir trouvé 'v' , ca veut dire qu'il n'existe aucun chemin entre u et v  
     }
+
+    public static int distanceMaximale(Graph<String, DefaultEdge> g){
+        int distanceMax = 0; // initialisation de la distance max à 0
+        for (String s1 : g.vertexSet()){ // parcour de tous les sommets du graphe 
+            for (String s2 : g.vertexSet()){ // Parcour de tous les autres sommets du graphe 
+                if (!s1.equals(s2)){ // si le sommet 1 et 2 ne sont pas identiques 
+                    int distance = distanceEntreActeurs(g , s1 , s2); // initalisation de la distance entre 2 sommets du graphe 
+                    if (distance > distanceMax){ // si la distance calculée est supérieur à le distance max 
+                        distanceMax = distance; // alors la distance calculée devient la distance max 
+                    }
+                }
+            }
+        }
+        return distanceMax; // on retourne la distance ma 
+
+    }
+
+
+
+
 }
 
 
