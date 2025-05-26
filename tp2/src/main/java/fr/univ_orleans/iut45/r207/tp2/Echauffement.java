@@ -53,17 +53,14 @@ public class Echauffement{
 }
 
     public static Set<String> getCollaborateursCommuns(Graph<String, DefaultEdge> g, String u, String v) {
-        Set<String> voisinsU = new HashSet<>(Graphs.neighborListOf(g, u)); // on cree un ensemble en y incorporant tous les voisins du sommet U 
-        Set<String> voisinsV = new HashSet<>(Graphs.neighborListOf(g, v)); // Meme traitement pour le sommet V 
-    
-        Set<String> collaborateursCommuns = new HashSet<>(); // Creation d'un ensemble vide pour y incorporer les voisins communs de u et v 
-        for (String voisin : voisinsU) { // parcour de tous les voisins de U 
-            if (voisinsV.contains(voisin)) { // Si un des voisins de U est aussi dans l'ensemble des voisins de V 
-                collaborateursCommuns.add(voisin);  // Ajout de ce voisins dans l'ensemble vide 
-            }
-        }
-    
-        return collaborateursCommuns; // on retourne l'ensemble des collaborateurs communs 
+        Set<String> voisinsU = new HashSet<>(Graphs.neighborListOf(g, u));
+        Set<String> voisinsV = new HashSet<>(Graphs.neighborListOf(g, v));
+        voisinsU.remove(u);
+        voisinsU.remove(v);
+        voisinsV.remove(u);
+        voisinsV.remove(v);
+        voisinsU.retainAll(voisinsV);
+        return voisinsU;
     }
 
     public static Set<String> collaboProche(Graph<String, DefaultEdge> g, String u, int k){
