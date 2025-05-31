@@ -18,6 +18,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+//3.1
 public class Echauffement{
     public static Graph<String, DefaultEdge> convertir(String chemin) throws IOException {
         Graph<String, DefaultEdge> graphe = new SimpleGraph<>(DefaultEdge.class); // creation d'un graphe simple avec des aretes Default Edge
@@ -46,6 +47,7 @@ public class Echauffement{
         return graphe; // on retourne le graphe 
 }
 
+//3.2
     public static Set<String> getCollaborateursCommuns(Graph<String, DefaultEdge> g, String u, String v) {
         Set<String> voisinsU = new HashSet<>(Graphs.neighborListOf(g, u));
         Set<String> voisinsV = new HashSet<>(Graphs.neighborListOf(g, v));
@@ -57,6 +59,7 @@ public class Echauffement{
         return voisinsU;
     }
 
+//3.3
     public static Set<String> collaboProche(Graph<String, DefaultEdge> g, String u, int k){
         if (!g.containsVertex(u)) { // si le sommet u n'est pas présent dans le graphe 
             System.out.println(u + " est un illustre inconnu"); // indique que le sommet est inexistant 
@@ -82,7 +85,7 @@ public class Echauffement{
 
 
     
-
+//3.4
     public static int distanceEntreActeurs(Graph<String, DefaultEdge> g, String u, String v) {
     if (!g.containsVertex(u) || !g.containsVertex(v)) { // si le sommet u ou v n'existe pas dans le graphe 
         System.out.println("Un des sommets est inconnu"); // on indique qu'il n'existe pas 
@@ -156,6 +159,7 @@ public static String centreGraphe(Graph<String, DefaultEdge> g) {
     return centre;
 }
 
+//3.5
     public static int distanceMaximale(Graph<String, DefaultEdge> g) {
     int distanceMax = 0;
     List<String> sommets = new ArrayList<>(g.vertexSet());
