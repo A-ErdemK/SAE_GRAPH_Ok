@@ -1,28 +1,22 @@
 package fr.univ_orleans.iut45.r207.tp2;
 
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import org.jgrapht.Graphs;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+
 import org.jgrapht.Graph;
 import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.nio.csv.CSVImporter;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class Echauffement{
     public static Graph<String, DefaultEdge> convertir(String chemin) throws IOException {
@@ -96,7 +90,7 @@ public class Echauffement{
     }
     Set<String> visites = new HashSet<>(); // creation d'un ensemble vide pour les sommets deja visités 
     visites.add(u);  // on y ajoute le sommet u 
-    List<String> courant = new ArrayList<>(); // creation d'un ensemble vide pour les sommets du niveau courant 
+    List<String> courant = new ArrayList<>(); // creation d'une liste vide pour les sommets du niveau courant 
     courant.add(u); // on y ajoute le sommet u 
     int distance = 0; // creation d'une variable distance initialisé à 0
 
@@ -119,6 +113,140 @@ public class Echauffement{
     }
     return -1; // si on sort de la boucle sans jamais avoir trouvé 'v' , ca veut dire qu'il n'existe aucun chemin entre u et v  
     }
+    public static int centralite(Graph<String, DefaultEdge> g, String u) {
+    Set<String> visites = new HashSet<>();
+    visites.add(u);
+    List<String> courant = new ArrayList<>();
+    courant.add(u);
+    int distance = 0;
+    int maxDistance = 0;
+
+    while (!courant.isEmpty()) {
+        List<String> prochain = new ArrayList<>();
+        for (String sommet : courant) {
+            for (String voisin : Graphs.neighborListOf(g, sommet)) {
+                if (!visites.contains(voisin)) {
+                    visites.add(voisin);
+                    prochain.add(voisin);
+                }
+            }
+        }
+        if (!prochain.isEmpty()) {
+            maxDistance++;
+        }
+        courant = prochain;
+    }
+    if (visites.size() != g.vertexSet().size()) {
+        return -1; // sommet isolé ou graphe non connexe
+    }
+    return maxDistance;
+}
+
+// Trouve le centre du graphe (sommet avec la plus petite excentricité)
+public static String centreGraphe(Graph<String, DefaultEdge> g) {
+    String centre = null;
+    int minCentralite = Integer.MAX_VALUE;
+    for (String v : g.vertexSet()) {
+        int c = centralite(g, v);
+        if (c != -1 && c < minCentralite) {
+            minCentralite = c;
+            centre = v;
+        }
+    }
+    return centre;
+}
+
+    public static int distanceMaximale(Graph<String, DefaultEdge> g) {
+    int distanceMax = 0;
+    List<String> sommets = new ArrayList<>(g.vertexSet());
+
+    for (int i = 0; i < sommets.size(); i++) {
+        for (int j = i + 1; j < sommets.size(); j++) {
+            int d = distanceEntreActeurs(g, sommets.get(i), sommets.get(j));
+            if (d > distanceMax) {
+                distanceMax = d;
+            }
+        }
+    }
+
+    return distanceMax;
+    }
+    public static double distanceMoyenne(Graph<String, DefaultEdge> g, String s) {
+    if (!g.containsVertex(s)) {
+        System.out.println(s + " n'apparaît pas dans le graphe");
+        return -1;
+    }
+
+    double sommeDistance = 0;
+    int nbrDistances = 0;
+
+    for (String sommet : g.vertexSet()) {
+        if (!sommet.equals(s)) {
+            int d = distanceEntreActeurs(g, s, sommet);
+            if (d != -1) {
+                sommeDistance += d;
+                nbrDistances++;
+            }
+        }
+    }
+
+    if (nbrDistances > 0) {
+        return sommeDistance / nbrDistances;
+    } else {
+        return -1;
+    }
+    }
+
+    public static String acteurPlusProcheEnMoyenne(Graph<String, DefaultEdge> g) {
+    String meilleur = null;
+    double minMoyenne = Double.MAX_VALUE;
+
+    for (String v : g.vertexSet()) {
+        double moyenne = distanceMoyenne(g, v);
+        if (moyenne != -1 && moyenne < minMoyenne) {
+            minMoyenne = moyenne;
+            meilleur = v;
+        }
+    }
+
+    return meilleur;
+    }
+
+    //Bonus 
+    public static String centreDuGroupe(Graph<String, DefaultEdge> g, Set<String> groupe) {
+    String meilleur = null;
+    int minMaxDistance = Integer.MAX_VALUE;
+
+    for (String candidat : g.vertexSet()) {
+        int maxDistance = 0;
+        boolean accessible = true;
+
+        for (String membre : groupe) {
+            int d = Echauffement.distanceEntreActeurs(g, candidat, membre);
+            if (d == -1) {
+                accessible = false;
+                break;
+            }
+            if (d > maxDistance) {
+                maxDistance = d;
+            }
+        }
+
+        if (accessible && maxDistance < minMaxDistance) {
+            minMaxDistance = maxDistance;
+            meilleur = candidat;
+        }
+    }
+
+    return meilleur;
+    }
+
+    public static Graph<String, DefaultEdge> sousGrapheDesProches(Graph<String, DefaultEdge> g, String acteur, int k) {
+        Set<String> proches = collaboProche(g, acteur, k); // réutilise ma méthode 
+        return new org.jgrapht.graph.AsSubgraph<>(g, proches);
+    }
+
+
 }
 
 
