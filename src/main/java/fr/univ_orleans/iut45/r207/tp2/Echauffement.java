@@ -177,28 +177,28 @@ public static String centreGraphe(Graph<String, DefaultEdge> g) {
     return distanceMax; // on retourne la distance maximale 
     }
     public static double distanceMoyenne(Graph<String, DefaultEdge> g, String s) {
-    if (!g.containsVertex(s)) {
-        System.out.println(s + " n'apparaît pas dans le graphe");
+    if (!g.containsVertex(s)) { // si le graphe g ne contient pas le sommet s 
+        System.out.println(s + " n'apparaît pas dans le graphe"); // on avertit l'utilisateur 
         return -1;
     }
 
-    double sommeDistance = 0;
-    int nbrDistances = 0;
+    double sommeDistance = 0; // on  initalise une variable pour la somme des distances 
+    int nbrDistances = 0; // on initalise une variable pour le nombres de distances 
 
-    for (String sommet : g.vertexSet()) {
-        if (!sommet.equals(s)) {
-            int d = distanceEntreActeurs(g, s, sommet);
-            if (d != -1) {
-                sommeDistance += d;
-                nbrDistances++;
+    for (String sommet : g.vertexSet()) { // on parcoure tous les sommets du graphe 
+        if (!sommet.equals(s)) { // si le sommet parcouru n'est pas le sommet s 
+            int d = distanceEntreActeurs(g, s, sommet); // on calcule la distance entre le sommet s et ce dernier 
+            if (d != -1) { // si cette distance n'est pas égale a -1 
+                sommeDistance += d; // on ajoute la distance à la variable some 
+                nbrDistances++; // on incrémente la variable des nombres de distances 
             }
         }
     }
 
-    if (nbrDistances > 0) {
-        return sommeDistance / nbrDistances;
+    if (nbrDistances > 0) { // si la variable des nombres de distances est supérieur à 0 
+        return sommeDistance / nbrDistances; // on retourne le rapport entre la somme des distances et le nombre des distances 
     } else {
-        return -1;
+        return -1; // sinon on retourne -1 
     }
     }
 
