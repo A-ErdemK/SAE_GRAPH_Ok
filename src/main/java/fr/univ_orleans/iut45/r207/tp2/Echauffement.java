@@ -203,18 +203,18 @@ public static String centreGraphe(Graph<String, DefaultEdge> g) {
     }
 
     public static String acteurPlusProcheEnMoyenne(Graph<String, DefaultEdge> g) {
-    String meilleur = null;
-    double minMoyenne = Double.MAX_VALUE;
+    String meilleur = null; // on initalise une variable pour stocker le sommet ayant la plus petite distance moyenne 
+    double minMoyenne = Double.MAX_VALUE; // on initalise une variable pour la distance moyenne minimale trouvée 
 
-    for (String v : g.vertexSet()) {
-        double moyenne = distanceMoyenne(g, v);
-        if (moyenne != -1 && moyenne < minMoyenne) {
-            minMoyenne = moyenne;
-            meilleur = v;
+    for (String v : g.vertexSet()) { // on parcoure tous les sommets du graphe g 
+        double moyenne = distanceMoyenne(g, v); // on calcule la distance moyenne entre le sommet actuel et tous les autres sommets 
+        if (moyenne != -1 && moyenne < minMoyenne) { // si la distance moyenne est superieur à -1 et est inferieur à la distance moyenne minimale 
+            minMoyenne = moyenne; // on actualise cette variable 
+            meilleur = v;  // on met a jour le sommet ayant la plus petite distance moyenne 
         }
     }
 
-    return meilleur;
+    return meilleur; // on retourne cette meme variable 
     }
 
     //Bonus 
