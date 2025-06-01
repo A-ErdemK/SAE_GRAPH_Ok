@@ -116,34 +116,35 @@ public class Echauffement{
     }
     return -1; // si on sort de la boucle sans jamais avoir trouvé 'v' , ca veut dire qu'il n'existe aucun chemin entre u et v  
     }
-    public static int centralite(Graph<String, DefaultEdge> g, String u) {
-    Set<String> visites = new HashSet<>();
-    visites.add(u);
-    List<String> courant = new ArrayList<>();
-    courant.add(u);
-    int distance = 0;
-    int maxDistance = 0;
+   public static int centralite(Graph<String, DefaultEdge> g, String u) {
+    Set<String> visites = new HashSet<>(); // on creer un ensemble pour y stocker les sommets visités 
+    visites.add(u); // on y ajoute le sommet u 
+    List<String> courant = new ArrayList<>(); // on creer une liste pour y stocker les sommers courant 
+    courant.add(u); // on y ajoute u 
+    int distance = 0; // on creer une variable distance et on l'initalise à 0
+    int maxDistance = 0; // pareil pour une variable  distance maximale 
 
-    while (!courant.isEmpty()) {
-        List<String> prochain = new ArrayList<>();
-        for (String sommet : courant) {
-            for (String voisin : Graphs.neighborListOf(g, sommet)) {
-                if (!visites.contains(voisin)) {
-                    visites.add(voisin);
-                    prochain.add(voisin);
+    while (!courant.isEmpty()) { // tant que l'ensemble des sommets courants n'est pas vide 
+        List<String> prochain = new ArrayList<>(); // on creer une liste pour les prochains sommets 
+        for (String sommet : courant) { // on parcour tous les sommets de l'ensemble courant 
+            for (String voisin : Graphs.neighborListOf(g, sommet)) { //  on parcour tous leur vosins 
+                if (!visites.contains(voisin)) { // si ces sommets ne sont pas contenus dans l'ensemble des sommet visités
+                    visites.add(voisin); // on les ajoute dans ce meme ensemble 
+                    prochain.add(voisin); // on les ajoute dans l'ensemble prochain 
                 }
             }
         }
-        if (!prochain.isEmpty()) {
-            maxDistance++;
+        if (!prochain.isEmpty()) { // si la liste des prochains sommet n'est pas vide 
+            maxDistance++; // on augmente la distance maximale 
         }
-        courant = prochain;
+        courant = prochain; // le prochain sommet devient le sommet courant 
     }
-    if (visites.size() != g.vertexSet().size()) {
+    if (visites.size() != g.vertexSet().size()) { // si la taille de l'ensemble des sommets visités n'est pas égal à la taille d l'ensmeble des sommets
         return -1; // sommet isolé ou graphe non connexe
     }
-    return maxDistance;
+    return maxDistance; // on retourne la distance maximale 
 }
+
 
 // Trouve le centre du graphe (sommet avec la plus petite excentricité)
 public static String centreGraphe(Graph<String, DefaultEdge> g) {
