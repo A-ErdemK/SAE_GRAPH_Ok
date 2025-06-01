@@ -219,31 +219,31 @@ public static String centreGraphe(Graph<String, DefaultEdge> g) {
 
     //Bonus 
     public static String centreDuGroupe(Graph<String, DefaultEdge> g, Set<String> groupe) {
-    String meilleur = null;
+    String meilleur = null; // on initalise une variable pour y stocker le centre du groupe 
     int minMaxDistance = Integer.MAX_VALUE;
 
-    for (String candidat : g.vertexSet()) {
-        int maxDistance = 0;
-        boolean accessible = true;
+    for (String candidat : g.vertexSet()) { // on parcoure tous les sommets du graphe 
+        int maxDistance = 0; // on initalise une variable de distance maximale à 0
+        boolean accessible = true; // on utlise une variable booléenne 
 
-        for (String membre : groupe) {
-            int d = Echauffement.distanceEntreActeurs(g, candidat, membre);
-            if (d == -1) {
-                accessible = false;
+        for (String membre : groupe) { // on paqrcour tous les sommets du groupe 
+            int d = Echauffement.distanceEntreActeurs(g, candidat, membre); // on calcule la distance entre le candidat et un membre du groupe de sommets 
+            if (d == -1) { // si la distance est égale a -1 
+                accessible = false;  // on retourne false 
                 break;
             }
-            if (d > maxDistance) {
-                maxDistance = d;
+            if (d > maxDistance) { // si la distance est superieur à la distance maximale 
+                maxDistance = d; // on la met à jour 
             }
         }
 
-        if (accessible && maxDistance < minMaxDistance) {
-            minMaxDistance = maxDistance;
-            meilleur = candidat;
+        if (accessible && maxDistance < minMaxDistance) { // si le candidat est accessible à tous les membres du groupe et que sa distance maximale est superieur à la distance minimale trouvée 
+            minMaxDistance = maxDistance; // on la met à jour 
+            meilleur = candidat; // on met à jour la variable meilleur 
         }
     }
 
-    return meilleur;
+    return meilleur; // et on la retourne 
     }
 
     public static Graph<String, DefaultEdge> sousGrapheDesProches(Graph<String, DefaultEdge> g, String acteur, int k) {
