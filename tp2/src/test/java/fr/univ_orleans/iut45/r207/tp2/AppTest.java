@@ -75,7 +75,6 @@ public class AppTest
         gtest1.addEdge("Alice", "Charlie");
         gtest1.addEdge("Alice", "Grace");
 
-        // Les collaborateurs proches à distance 1 de Alice sont : Alice, Bob, Charlie, Grace
         Set<String> attendu1 = Set.of("Alice", "Bob", "Charlie", "Grace");
         assertEquals(attendu1, Echauffement.collaboProche(gtest1, "Alice", 1));
     }
@@ -119,4 +118,12 @@ public class AppTest
         Set<String> attendu6 = Set.of("Alice", "Bob", "Charlie", "Frank");
         assertEquals(attendu6, sousGraphe6.vertexSet());
     }
+
+    @Test
+    public void testDistanceMaximaleDataTxt() throws Exception {
+        Graph<String, DefaultEdge> g = Echauffement.convertir("data_100.txt");
+        int diam = Echauffement.distanceMaximale(g);
+        System.out.println("Diam du graphe (data_100.txt) : " + diam);
+        assertTrue(diam <= 6);
+}
 }
