@@ -1,6 +1,9 @@
 package fr.univ_orleans.iut45.r207.tp2;
 
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,15 +11,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.jgrapht.Graph;
 import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+
 
 //3.1
 public class Echauffement{
@@ -49,14 +49,14 @@ public class Echauffement{
 
 //3.2
     public static Set<String> getCollaborateursCommuns(Graph<String, DefaultEdge> g, String u, String v) {
-        Set<String> voisinsU = new HashSet<>(Graphs.neighborListOf(g, u));
-        Set<String> voisinsV = new HashSet<>(Graphs.neighborListOf(g, v));
-        voisinsU.remove(u);
-        voisinsU.remove(v);
-        voisinsV.remove(u);
-        voisinsV.remove(v);
-        voisinsU.retainAll(voisinsV);
-        return voisinsU;
+        Set<String> voisinsU = new HashSet<>(Graphs.neighborListOf(g, u)); // on cree un ensemble en y mettant tous les voisins de u 
+        Set<String> voisinsV = new HashSet<>(Graphs.neighborListOf(g, v)); // idem pour tous les voisins de v
+        voisinsU.remove(u); // on retire u pour le premier ensemble 
+        voisinsU.remove(v); // idem pour v 
+        voisinsV.remove(u); // meme chose pour le second ensemble 
+        voisinsV.remove(v); // idem
+        voisinsU.retainAll(voisinsV); //  on retire tous les sommets du premier ensemble qui ne sont pas contenus dans le second ensemble 
+        return voisinsU; // on retourne le premier ensemble 
     }
 
 //3.3
