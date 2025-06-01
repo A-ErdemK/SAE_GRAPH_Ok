@@ -148,33 +148,33 @@ public class Echauffement{
 
 // Trouve le centre du graphe (sommet avec la plus petite excentricité)
 public static String centreGraphe(Graph<String, DefaultEdge> g) {
-    String centre = null;
-    int minCentralite = Integer.MAX_VALUE;
-    for (String v : g.vertexSet()) {
-        int c = centralite(g, v);
-        if (c != -1 && c < minCentralite) {
-            minCentralite = c;
-            centre = v;
+    String centre = null; // on initalise un sommet centre à null
+    int minCentralite = Integer.MAX_VALUE; // on initalise une variable minCentralite pour stocker la valeur minimale de la centralite trouvee
+    for (String v : g.vertexSet()) { // on parcoure l'ensemble des sommets du graphe 
+        int c = centralite(g, v); // on calcule la centralite du sommet actuel 
+        if (c != -1 && c < minCentralite) { //  si cette centralite est différentee de -1  et est inférieure à la centralite minimale 
+            minCentralite = c; // on la met à jour 
+            centre = v; // on met à jour le sommet central avec le sommet actuel 
         }
     }
-    return centre;
+    return centre; // on le retourne 
 }
 
 //3.5
     public static int distanceMaximale(Graph<String, DefaultEdge> g) {
-    int distanceMax = 0;
-    List<String> sommets = new ArrayList<>(g.vertexSet());
+    int distanceMax = 0;  // on intialise une distance maximale à 0 
+    List<String> sommets = new ArrayList<>(g.vertexSet()); // on creer une liste de sommets avec l'ensemble des sommets du graphe g 
 
-    for (int i = 0; i < sommets.size(); i++) {
-        for (int j = i + 1; j < sommets.size(); j++) {
-            int d = distanceEntreActeurs(g, sommets.get(i), sommets.get(j));
-            if (d > distanceMax) {
-                distanceMax = d;
+    for (int i = 0; i < sommets.size(); i++) { // on parcours tout les sommets avec 2 boucles 
+        for (int j = i + 1; j < sommets.size(); j++) { 
+            int d = distanceEntreActeurs(g, sommets.get(i), sommets.get(j)); // on calcule la distance entre 2 sommets 
+            if (d > distanceMax) {  // si cette distance est supérieure à la distance maximale 
+                distanceMax = d; // on la met a jour 
             }
         }
     }
 
-    return distanceMax;
+    return distanceMax; // on retourne la distance maximale 
     }
     public static double distanceMoyenne(Graph<String, DefaultEdge> g, String s) {
     if (!g.containsVertex(s)) {
